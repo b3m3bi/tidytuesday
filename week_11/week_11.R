@@ -45,16 +45,13 @@ plot_data |>
     total_losses = sum(loss)
   )
 
-title_text <- "Salmon losses in Norway"
-subtitle_text <- "The main cause of salmon losses in Norwegian fish farms are deaths. Farms in Vestland report the highest number of losses. Some peaks in losses are driven by external mortality factors, such as algal blooms."
-caption_text <- "Data: Norwegian Veterinary Institute. TidyTuesday week 11."
 
-annot <- tibble(
-  region = "Nordland",
-  date = as.Date("2023-01-01"),
-  loss = 3000000,
-  text = "2025 algal bloom"
-)
+title_text <- "Salmon Losses in Norway"
+subtitle_text <- "The main cause of salmon losses in Norwegian fish farms are deaths. Farms in Vestland report the highest number of losses. Some peaks in losses are driven by external mortality factors, such as algal blooms."
+caption_text <- "*Data source*: Norwegian Veterinary Institute. TidyTuesday, Week 11."
+
+color_palette <- c("#dd2d4a", "#f49cbb", "#7678ed", "#3d348b")
+sec_col <- "gray50"
 
 plot_data |>  
   ggplot(
@@ -62,7 +59,12 @@ plot_data |>
   ) +
   geom_area(aes(fill = loss_type)) +
   geom_text(
-    data = annot,
+    data = tibble(
+      region = "Nordland",
+      date = as.Date("2022-01-01"),
+      loss = 3000000,
+      text = "2025 algal bloom"
+    ),
     aes(label = text),
     size = 3
   ) +
@@ -76,7 +78,7 @@ plot_data |>
     ),
     aes(x= date, xend = xend, y = loss, yend = yend),
     curvature = -0.2,
-    arrow = arrow(length = unit(0.1, "npc"))
+    arrow = arrow(length = unit(4, "pt"))
   ) +
   # facet_wrap(vars(fct_reorder(region, total_loss))) +
   facet_wrap(vars(region)) + 
@@ -89,17 +91,28 @@ plot_data |>
     caption = caption_text
   ) +
   scale_y_continuous(labels = scales::label_number(scale_cut = scales::cut_short_scale())) +
+  scale_fill_manual(values =  color_palette) +
   theme_minimal(base_family = "Google Sans") +
   theme(
     legend.position = 'top', 
-    legend.spacing.x = unit(1.0, 'cm'),
+    legend.key.spacing.x = unit(10, 'pt'),
+    legend.title = element_text(margin = margin(r = 15)),
     plot.title.position = "plot",
     plot.caption.position = "plot",
-    plot.caption = element_textbox_simple(hjust = 0, color = "gray30", margin = margin(t = 15)),
-    plot.title = element_text(face = "bold", size = 14, margin = margin(b = 15)),
+    plot.caption = element_textbox_simple(hjust = 0, color = sec_col, margin = margin(t = 15)),
+    plot.title = element_text(face = "bold", size = 14, margin = margin(b = 10)),
     plot.subtitle = element_textbox_simple(margin = margin(b = 15)),
     plot.margin = unit(c(10, 10, 10, 10), 'pt'),
     panel.grid.minor = element_blank(),
-    panel.spacing.x = unit(15, "pt"),
+    panel.spacing.x = unit(18, "pt"),
+    strip.text = element_text(face = "bold"),
+    axis.text = element_text(color = sec_col)
   )
-  
+
+ggsave(
+  "week_11.png",
+  width = 6.5,
+  height = 6,
+  dpi = 300
+)  
+
