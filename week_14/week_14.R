@@ -89,7 +89,7 @@ plot_data |>
     x ="",
     y ="",
     title = "Repair Success Rates Vary Widely by Item Type",
-    subtitle = "Repair Cafés connect volunteer fixers with people seeking to repair broken items, with higher success rates for non-electronic goods.",
+    subtitle = "Repair Cafes connect volunteer fixers with people seeking to repair broken items, with higher success rates for non-electronic goods.",
     caption = "Data: Repair Monitor. Tidytuesday 2026 week 13."
     ) +
   scale_fill_manual(
@@ -110,10 +110,10 @@ plot_data |>
     plot.title = element_text(face = "bold", margin = margin(b = 10), size = 17),
     plot.caption.position = "plot",
     plot.caption = element_text(hjust = 0, margin = margin(t = 10), color = "gray45"),
-    plot.subtitle = ggtext::element_markdown(),
+    plot.subtitle = ggtext::element_textbox_simple(),
     plot.margin = margin(t =10, l = 10, b = 10, r = 10),
     plot.background = element_rect(fill = bk_color)
   )
   
-showtext::showtext_opts(dpi = 96)
+showtext::showtext_opts(dpi = 300)
 ggsave("week_14.png", dpi = 300, width = 8, height = 6)
